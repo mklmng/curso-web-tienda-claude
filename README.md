@@ -24,7 +24,7 @@ A local server also works, e.g. `python3 -m http.server 8000`.
 ## Edit or add products
 Edit `data/data.js` (keep the commas and quotes valid). Each product needs: `id` (unique), `title`, `artist` (director for films), `format` (Vinyl, CD, DVD or Blu-ray),
 `genre`, `year`, `condition` (Near Mint, Very Good, Good, Acceptable), `price` (GBP), `added` (YYYY-MM-DD), `badge` ("", "New arrival", "Staff pick" or "Rare find"),
-`description`, `palette` (0-4) and `motif` (rings, sun, stripes, tri, dots). Music covers are square (1:1), film covers are vertical (9:16). The product page, catalogue filters and cover art update automatically.
+`description`, `palette` (0-4) and `motif` (rings, sun, stripes, tri, dots). Music covers are square (1:1), film covers are vertical (9:16). The product page, catalogue filters and cover art update automatically. When adding or removing products, update the corresponding `product.html?id=...` URLs in `sitemap.xml` too.
 
 ## Colours and typography
 Colours and sizes live in `css/variables.css`. Fonts (Space Grotesk and DM Sans) are loaded from Google Fonts by the three `<link>` tags in each page's `<head>`; to change fonts, edit those links and `--font-display` / `--font-body`. Without a connection, system fonts are used.
