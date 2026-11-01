@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEEDLE &amp; REWIND | Independent Music &amp; Film Store, London</title>
+<meta name="description" content="Fictional demo shop: second-hand vinyl, CDs, DVDs and Blu-rays in Islington, London. Good music never gets old.">
+<meta property="og:title" content="NEEDLE &amp; REWIND">
+<meta property="og:description" content="Second-hand vinyl, CDs, DVDs and Blu-rays. Demo website.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23242321'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23B84C35'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="css/main.css">
+<script src="data/data.js" defer></script>
+<script src="js/cart.js" defer></script>
+<script src="js/products.js" defer></script>
+<script src="js/main.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<p class="announce">Good music never gets old.</p>
+<header class="site-header">
+  <div class="wrap">
+    <a class="logo" href="index.html" aria-label="Needle &amp; Rewind, home">Needle &amp; Rewind</a>
+    <div class="header-tools">
+      <button class="btn btn--ghost" id="basket-open" type="button" hidden>Basket (<span id="basket-count">0</span>)</button>
+      <button class="btn btn--ghost menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    </div>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="index.html" aria-current="page">Home</a></li>
+        <li><a href="music.html">Music</a></li>
+        <li><a href="film.html">Film</a></li>
+        <li><a href="about.html">About us</a></li>
+        <li><a href="visit.html">Visit us</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div>
+        <p><strong>Independent music &amp; film store</strong></p>
+        <h1 id="hero-title">Find your next old favourite.</h1>
+        <p>Vinyl, CDs, DVDs and Blu-rays. Second-hand treasures for music lovers and film obsessives.</p>
+        <div class="hero__actions">
+          <a class="btn" href="music.html">Explore music</a>
+          <a class="btn btn--ghost" href="film.html">Discover films</a>
+        </div>
+      </div>
+      <div class="hero__art" role="img" aria-label="Illustration of a vinyl record with an orange label">
+        <svg viewBox="0 0 400 400" aria-hidden="true" focusable="false">
+          <circle cx="200" cy="200" r="198" fill="#242321"/>
+          <g fill="none" stroke="#F2EBDD" stroke-opacity=".25"><circle cx="200" cy="200" r="180"/><circle cx="200" cy="200" r="160"/><circle cx="200" cy="200" r="140"/><circle cx="200" cy="200" r="120"/></g>
+          <path d="M200 200 L200 20 A180 180 0 0 1 340 80 Z" fill="#F2EBDD" fill-opacity=".08"/>
+          <circle cx="200" cy="200" r="70" fill="#F2EBDD"/>
+          <circle cx="200" cy="200" r="8" fill="#B84C35"/>
+          <path id="arc" d="M200 200 m-48 0 a48 48 0 1 1 96 0 a48 48 0 1 1 -96 0" fill="none"/>
+          <text font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#242321" letter-spacing="3"><textPath href="#arc">NEEDLE &amp; REWIND · SIDE A · </textPath></text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="shop" aria-labelledby="shop-title">
+    <div class="wrap">
+      <h2 id="shop-title">Dig through the crates.</h2>
+      <p>Pick a format and start browsing.</p>
+      <div class="formats">
+        <a class="format" href="music.html?format=Vinyl"><strong>Vinyl</strong>The sound of something special.</a>
+        <a class="format" href="music.html?format=CD"><strong>CDs</strong>Small discs. Big memories.</a>
+        <a class="format" href="film.html?format=DVD"><strong>DVDs</strong>Cult classics and hidden gems.</a>
+        <a class="format" href="film.html?format=Blu-ray"><strong>Blu-ray</strong>Cinema worth keeping.</a>
+      </div>
+    </div>
+  </section>
+
+    <section class="section section--tight" aria-labelledby="new-film-title">
+    <div class="wrap">
+      <div class="section-head"><h2 id="new-film-title">New in film</h2><a href="film.html">View all film</a></div>
+      <div class="carousel">
+        <button class="arrow arrow--prev" type="button" aria-label="Previous films" aria-controls="row-film" aria-disabled="true" hidden><span aria-hidden="true">‹</span></button>
+        <div class="row-scroll" role="region" aria-labelledby="new-film-title" tabindex="0"><ul class="row" id="row-film" role="list"></ul></div>
+        <button class="arrow arrow--next" type="button" aria-label="Next films" aria-controls="row-film" hidden><span aria-hidden="true">›</span></button>
+      </div>
+      <noscript><p class="empty">The shelves need JavaScript to load. You can still browse the <a href="music.html">music</a> and <a href="film.html">film</a> pages.</p></noscript>
+    </div>
+  </section>
+
+  <section class="section section--tight" aria-labelledby="new-music-title">
+    <div class="wrap">
+      <div class="section-head"><h2 id="new-music-title">New in music</h2><a href="music.html">View all music</a></div>
+      <div class="carousel">
+        <button class="arrow arrow--prev" type="button" aria-label="Previous music" aria-controls="row-music" aria-disabled="true" hidden><span aria-hidden="true">‹</span></button>
+        <div class="row-scroll" role="region" aria-labelledby="new-music-title" tabindex="0"><ul class="row" id="row-music" role="list"></ul></div>
+        <button class="arrow arrow--next" type="button" aria-label="Next music" aria-controls="row-music" hidden><span aria-hidden="true">›</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band" id="about" aria-labelledby="about-title">
+    <div class="wrap split">
+      <h2 id="about-title">Physical media. Real stories.</h2>
+      <div>
+        <p>Not everything needs to be streamed. Some things deserve a place on your shelf. We buy, sort and sell second-hand records and films, and we grade every copy honestly so you know what you are getting.</p>
+        <p>Condition matters here: a Near Mint LP and an Acceptable one are never priced or described the same way.</p>
+        <p><a class="btn btn--ghost" href="about.html">Our story</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="visit" aria-labelledby="visit-title">
+    <div class="wrap split">
+      <div>
+        <h2 id="visit-title">Come dig with us.</h2>
+        <address>42 Camden Passage<br>Islington, London N1 8EA<br>United Kingdom</address>
+        <p><a href="mailto:hello@needleandrewind.example">hello@needleandrewind.example</a></p>
+        <p><small>This is a fictional shop. Address and contact details are demonstration content.</small></p>
+        <p><a class="btn" href="visit.html">Plan your visit</a></p>
+      </div>
+      <table>
+        <caption class="visually-hidden">Opening hours</caption>
+        <tbody>
+          <tr><th scope="row">Monday to Wednesday</th><td>10:00–18:00</td></tr>
+          <tr><th scope="row">Thursday and Friday</th><td>10:00–19:00</td></tr>
+          <tr><th scope="row">Saturday</th><td>10:00–18:00</td></tr>
+          <tr><th scope="row">Sunday</th><td>11:00–17:00</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section band" aria-labelledby="news-title">
+    <div class="wrap">
+      <h2 id="news-title">New crates, in your inbox.</h2>
+      <p>Demo form: nothing is sent or stored.</p>
+      <form id="newsletter" class="field" novalidate>
+        <label for="email">Email address</label>
+        <input id="email" name="email" type="email" autocomplete="email" aria-describedby="newsletter-msg" required>
+        <button class="btn" type="submit">Subscribe (demo)</button>
+      </form>
+      <p class="msg" id="newsletter-msg" role="status"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>
+      <p><strong>NEEDLE &amp; REWIND</strong><br>Good music never gets old.</p>
+      <p>42 Camden Passage, Islington, London N1 8EA</p>
+    </div>
+    <ul>
+      <li><a href="music.html">Music</a></li>
+      <li><a href="film.html">Film</a></li>
+      <li><a href="about.html">About us</a></li>
+      <li><a href="visit.html">Visit us</a></li>
+      <li><a href="privacidad.html" lang="es" hreflang="es">Política de privacidad</a></li>
+    </ul>
+    <p><small>© 2026 NEEDLE &amp; REWIND. Fictional demo project; not a real business.</small></p>
+  </div>
+</footer>
+
+<dialog id="basket" aria-labelledby="basket-title">
+  <h2 id="basket-title" class="dialog-title">Your basket</h2>
+  <ul class="basket-list" id="basket-list"></ul>
+  <p id="basket-subtotal"></p>
+  <p class="notice">Demo basket: checkout and payments are not available, and no personal data is requested or stored.</p>
+  <button class="btn" id="basket-close" type="button">Close basket</button>
+</dialog>
+<p class="visually-hidden" id="status" role="status"></p>
+</body>
+</html>

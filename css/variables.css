@@ -1,0 +1,23 @@
+/* Design tokens. Change colours and fonts here only. */
+:root {
+  --color-cream: #F2EBDD;
+  --color-charcoal: #242321;
+  --color-orange: #B84C35;
+  --color-olive: #747B55;
+  --color-blue: #8495A0;
+  --color-white: #FAF8F2;
+
+  /* Fonts are loaded from Google Fonts by the <link> in each page's <head>; system fonts are the fallback. */
+  --font-display: "Space Grotesk", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --font-body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --step-3: clamp(2.6rem, 1.6rem + 5.5vw, 6rem);
+  --space: clamp(1rem, 0.6rem + 2vw, 2rem);
+  --section: clamp(3rem, 2rem + 6vw, 7rem);
+  --radius: 12px;
+  --radius-pill: 999px;
+  --line-soft: 1px solid rgb(36 35 33 / .16);
+  --line: 2px solid var(--color-charcoal);
+  --max: 76rem;
+}

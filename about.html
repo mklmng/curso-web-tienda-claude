@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About us | NEEDLE &amp; REWIND</title>
+<meta name="description" content="The story of NEEDLE &amp; REWIND, a fictional independent second-hand music and film shop in Islington, and how we grade condition.">
+<meta property="og:title" content="About us | NEEDLE &amp; REWIND">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23242321'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23B84C35'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="css/main.css">
+<script src="data/data.js" defer></script>
+<script src="js/cart.js" defer></script>
+<script src="js/products.js" defer></script>
+<script src="js/main.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<p class="announce">Good music never gets old.</p>
+<header class="site-header">
+  <div class="wrap">
+    <a class="logo" href="index.html" aria-label="Needle &amp; Rewind, home">Needle &amp; Rewind</a>
+    <div class="header-tools">
+      <button class="btn btn--ghost" id="basket-open" type="button" hidden>Basket (<span id="basket-count">0</span>)</button>
+      <button class="btn btn--ghost menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    </div>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="music.html">Music</a></li>
+        <li><a href="film.html">Film</a></li>
+        <li><a href="about.html" aria-current="page">About us</a></li>
+        <li><a href="visit.html">Visit us</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<main id="main">
+  <section class="section" aria-labelledby="page-title">
+    <div class="wrap prose">
+      <h1 id="page-title" class="page-title">Physical media. Real stories.</h1>
+      <p>NEEDLE &amp; REWIND began as a shared crate of records and a shelf of rented-out films in a Camden Passage back room. Today it is a small shop for people who still like to hold what they listen to and watch.</p>
+      <p>We buy collections big and small, sort them by hand and sell them at fair prices. Some copies are well-known favourites. Others are oddities nobody has asked for in years, and those are our favourites.</p>
+      <p><small>This is a fictional shop created for a website demo. The story, names and dates are invented.</small></p>
+      <h2>How we grade condition</h2>
+      <p>Every copy is checked and graded before it reaches the shelf, and the grade is always shown next to the price.</p>
+      <dl class="grades">
+        <div><dt>Near Mint</dt><dd>Looks and plays like new, with barely any signs of handling.</dd></div>
+        <div><dt>Very Good</dt><dd>Light signs of use. Plays well with minimal surface noise or marks.</dd></div>
+        <div><dt>Good</dt><dd>Visible wear and some noise or marks, but fully playable and complete.</dd></div>
+        <div><dt>Acceptable</dt><dd>Heavy wear. Playable, but best for completists and bargain hunters.</dd></div>
+      </dl>
+      <h2>What we do</h2>
+      <p>We sell vinyl, CDs, DVDs and Blu-rays, second-hand and always honestly described. Browse the <a href="music.html">music</a> and <a href="film.html">film</a> shelves, or <a href="visit.html">come and see us</a>.</p>
+    </div>
+  </section>
+</main>   <div><p><strong>NEEDLE &amp; REWIND</strong><br>Good music never gets old.</p><p>42 Camden Passage, Islington, London N1 8EA</p></div>
+    <ul>
+      <li><a href="music.html">Music</a></li><li><a href="film.html">Film</a></li>
+      <li><a href="about.html">About us</a></li><li><a href="visit.html">Visit us</a></li>
+      <li><a href="privacidad.html" lang="es" hreflang="es">Política de privacidad</a></li>
+    </ul>
+    <p><small>© 2026 NEEDLE &amp; REWIND. Fictional demo project; not a real business.</small></p>
+  </div>
+</footer>
+<dialog id="basket" aria-labelledby="basket-title">
+  <h2 id="basket-title" class="dialog-title">Your basket</h2>
+  <ul class="basket-list" id="basket-list"></ul>
+  <p id="basket-subtotal"></p>
+  <p class="notice">Demo basket: checkout and payments are not available, and no personal data is requested or stored.</p>
+  <button class="btn" id="basket-close" type="button">Close basket</button>
+</dialog>
+<p class="visually-hidden" id="status" role="status"></p>
+</body>
+</html>
