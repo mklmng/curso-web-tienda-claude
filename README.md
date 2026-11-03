@@ -16,7 +16,7 @@ A local server also works, e.g. `python3 -m http.server 8000`.
     js/main.js          menu, basket dialog, newsletter demo, home carousels
     js/catalogue.js     search, filters and sorting (music.html, film.html)
     js/product.js       product detail from ?id=
-    js/products.js      data loading, product cards, generated SVG covers
+    js/products.js      catalogue validation, shared UI helpers, product cards and SVG covers
     js/cart.js          basket in localStorage
     data/data.js        the catalogue (24 items)
     robots.txt  sitemap.xml
@@ -24,7 +24,7 @@ A local server also works, e.g. `python3 -m http.server 8000`.
 ## Edit or add products
 Edit `data/data.js` (keep the commas and quotes valid). Each product needs: `id` (unique), `title`, `artist` (director for films), `format` (Vinyl, CD, DVD or Blu-ray),
 `genre`, `year`, `condition` (Near Mint, Very Good, Good, Acceptable), `price` (GBP), `added` (YYYY-MM-DD), `badge` ("", "New arrival", "Staff pick" or "Rare find"),
-`description`, `palette` (0-4) and `motif` (rings, sun, stripes, tri, dots). Music covers are square (1:1), film covers are vertical (9:16). The product page, catalogue filters and cover art update automatically. When adding or removing products, update the corresponding `product.html?id=...` URLs in `sitemap.xml` too.
+`description`, `palette` (0-4) and `motif` (rings, sun, stripes, tri, dots). The catalogue validates required fields, unique IDs and supported values before rendering. Music covers are square (1:1), film covers are vertical (9:16). The product page, catalogue filters and cover art update automatically. When adding or removing products, update the corresponding `product.html?id=...` URLs in `sitemap.xml` too.
 
 ## Colours and typography
 Colours and sizes live in `css/variables.css`. Fonts (Space Grotesk and DM Sans) are loaded from Google Fonts by the three `<link>` tags in each page's `<head>`; to change fonts, edit those links and `--font-display` / `--font-body`. Without a connection, system fonts are used.

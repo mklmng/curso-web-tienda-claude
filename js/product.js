@@ -1,7 +1,16 @@
 (() => {
 'use strict';
 // Product detail page: reads ?id= from the URL and renders the matching product safely.
-const { loadProducts, createCover, createCard, money, showDataError } = window.NR.ui;
+const {
+  loadProducts,
+  createCover,
+  createCard,
+  createTextElement,
+  isFilm,
+  addToBasket,
+  money,
+  showDataError
+} = window.NR.ui;
 const basket = window.NR.cart;
 
 const root = document.querySelector('#product');
@@ -12,75 +21,144 @@ const NOTES = {
   'Good': 'Visible wear and some noise or marks, but fully playable and complete.',
   'Acceptable': 'Heavy wear. Playable, but best for completists and bargain hunters.'
 };
-const el = (tag, cls, content) => { const n = document.createElement(tag); if (cls) n.className = cls; if (content !== undefined) n.textContent = content; return n; };
-const isFilm = p => p.format === 'DVD' || p.format === 'Blu-ray';
 
-function breadcrumb(p) {
-  const nav = el('nav'); nav.setAttribute('aria-label', 'Breadcrumb');
-  const ol = el('ol', 'crumbs');
-  const items = [['index.html', 'Home'], [isFilm(p) ? 'film.html' : 'music.html', isFilm(p) ? 'Film' : 'Music'], [null, p.title]];
+function breadcrumb(product) {
+  const nav = document.createElement('nav');
+  nav.setAttribute('aria-label', 'Breadcrumb');
+
+  const list = createTextElement('ol', 'crumbs');
+  const categoryLink = isFilm(product) ? 'film.html' : 'music.html';
+  const categoryName = isFilm(product) ? 'Film' : 'Music';
+  const items = [['index.html', 'Home'], [categoryLink, categoryName], [null, product.title]];
+
   items.forEach(([href, label]) => {
-    const li = el('li');
-    if (href) { const a = el('a', '', label); a.href = href; li.append(a); }
-    else { li.textContent = label; li.setAttribute('aria-current', 'page'); }
-    ol.append(li);
+    const item = document.createElement('li');
+    if (href) {
+      const link = createTextElement('a', '', label);
+      link.href = href;
+      item.append(link);
+    } else {
+      item.textContent = label;
+      item.setAttribute('aria-current', 'page');
+    }
+    list.append(item);
   });
-  nav.append(ol);
+
+  nav.append(list);
   return nav;
 }
 
-function details(p) {
-  const dl = el('dl', 'facts');
-  [['Format', p.format], ['Genre', p.genre], ['Year', p.year], [isFilm(p) ? 'Director' : 'Artist', p.artist]].forEach(([k, v]) => {
-    const row = el('div'); row.append(el('dt', '', k), el('dd', '', v)); dl.append(row);
+function details(product) {
+  const list = createTextElement('dl', 'facts');
+  const rows = [
+    ['Format', product.format],
+    ['Genre', product.genre],
+    ['Year', product.year],
+    [isFilm(product) ? 'Director' : 'Artist', product.artist]
+  ];
+
+  rows.forEach(([label, value]) => {
+    const row = document.createElement('div');
+    row.append(
+      createTextElement('dt', '', label),
+      createTextElement('dd', '', value)
+    );
+    list.append(row);
   });
-  return dl;
+  return list;
 }
 
-function render(p, all) {
-  document.title = `${p.title} | NEEDLE & REWIND`;
-  const wrap = el('div', 'detail');
-  const cover = el('div', isFilm(p) ? 'detail__cover detail__cover--film' : 'detail__cover'); cover.append(createCover(p));
-  const info = el('div', 'detail__info');
-  if (p.badge) info.append(el('p', 'badge', p.badge));
-  const h1 = el('h1', 'page-title', p.title);
-  const cond = el('div', 'condition');
-  cond.append(el('p', '', `Condition: ${p.condition}`), el('p', '', NOTES[p.condition]));
-  cond.firstChild.className = 'condition__grade';
-  const price = el('p', 'price price--big', money.format(p.price));
-  const btn = el('button', 'btn', 'Add to basket'); btn.type = 'button';
-  btn.addEventListener('click', () => {
-    basket.add(p.id);
-    status.textContent = ''; setTimeout(() => (status.textContent = `${p.title} added to your demo basket.`), 50);
-  });
-  info.append(h1, details(p), cond, el('p', '', p.description), price, btn);
-  wrap.append(cover, info);
+function createCondition(product) {
+  const condition = createTextElement('div', 'condition');
+  condition.append(
+    createTextElement('p', 'condition__grade', `Condition: ${product.condition}`),
+    createTextElement('p', '', NOTES[product.condition])
+  );
+  return condition;
+}
 
-  const related = all.filter(r => r.id !== p.id)
-    .map(r => ({ r, score: (r.format === p.format ? 2 : 0) + (r.genre === p.genre ? 1 : 0) }))
-    .sort((a, b) => b.score - a.score || b.r.added.localeCompare(a.r.added)).slice(0, 4).map(x => x.r);
-  const sec = el('section', 'related'); sec.setAttribute('aria-labelledby', 'related-title');
-  const h2 = el('h2', '', 'You might also dig'); h2.id = 'related-title';
-  const ul = el('ul', isFilm(p) ? 'grid grid--film' : 'grid'); ul.append(...related.map(r => createCard(r, q => { basket.add(q.id); status.textContent = ''; setTimeout(() => (status.textContent = `${q.title} added to your demo basket.`), 50); })));
-  sec.append(h2, ul);
-  root.replaceChildren(breadcrumb(p), wrap, sec);
+function addProduct(product) {
+  addToBasket(product, basket, status);
+}
+
+function relatedProducts(product, allProducts) {
+  return allProducts
+    .filter(candidate => candidate.id !== product.id)
+    .map(candidate => ({
+      product: candidate,
+      score: (candidate.format === product.format ? 2 : 0)
+        + (candidate.genre === product.genre ? 1 : 0)
+    }))
+    .sort((a, b) => b.score - a.score || b.product.added.localeCompare(a.product.added))
+    .slice(0, 4)
+    .map(item => item.product);
+}
+
+function renderRelated(product, allProducts) {
+  const section = document.createElement('section');
+  section.className = 'related';
+  section.setAttribute('aria-labelledby', 'related-title');
+
+  const heading = createTextElement('h2', '', 'You might also dig');
+  heading.id = 'related-title';
+
+  const list = createTextElement('ul', isFilm(product) ? 'grid grid--film' : 'grid');
+  list.append(...relatedProducts(product, allProducts).map(item => createCard(item, addProduct)));
+  section.append(heading, list);
+  return section;
+}
+
+function render(product, allProducts) {
+  document.title = `${product.title} | NEEDLE & REWIND`;
+
+  const detail = createTextElement('div', 'detail');
+  const coverClass = isFilm(product) ? 'detail__cover detail__cover--film' : 'detail__cover';
+  const cover = createTextElement('div', coverClass);
+  cover.append(createCover(product));
+
+  const info = createTextElement('div', 'detail__info');
+  if (product.badge) info.append(createTextElement('p', 'badge', product.badge));
+  info.append(
+    createTextElement('h1', 'page-title', product.title),
+    details(product),
+    createCondition(product),
+    createTextElement('p', '', product.description),
+    createTextElement('p', 'price price--big', money.format(product.price))
+  );
+
+  const addButton = createTextElement('button', 'btn', 'Add to basket');
+  addButton.type = 'button';
+  addButton.addEventListener('click', () => addProduct(product));
+  info.append(addButton);
+
+  detail.append(cover, info);
+  root.replaceChildren(breadcrumb(product), detail, renderRelated(product, allProducts));
 }
 
 function notFound() {
   document.title = 'Product not found | NEEDLE & REWIND';
-  const h1 = el('h1', 'page-title', 'We could not find that copy');
-  const p = el('p', '', 'It may have been sold, or the link is wrong. Have a look at what is on the shelf now.');
-  const actions = el('p');
-  const m = el('a', 'btn', 'Browse music'); m.href = 'music.html';
-  const f = el('a', 'btn btn--ghost', 'Browse film'); f.href = 'film.html';
-  actions.append(m, ' ', f);
-  root.replaceChildren(h1, p, actions);
+
+  const heading = createTextElement('h1', 'page-title', 'We could not find that copy');
+  const message = createTextElement('p', '', 'It may have been sold, or the link is wrong. Have a look at what is on the shelf now.');
+  const actions = document.createElement('p');
+
+  const musicLink = createTextElement('a', 'btn', 'Browse music');
+  musicLink.href = 'music.html';
+  const filmLink = createTextElement('a', 'btn btn--ghost', 'Browse film');
+  filmLink.href = 'film.html';
+
+  actions.append(musicLink, ' ', filmLink);
+  root.replaceChildren(heading, message, actions);
 }
 
-loadProducts().then(all => {
+loadProducts().then(allProducts => {
   const id = new URLSearchParams(location.search).get('id');
-  const p = all.find(x => x.id === id);
-  p ? render(p, all) : notFound();
-}).catch(err => { showDataError(err); root.replaceChildren(); });
+  const product = allProducts.find(item => item.id === id);
+  if (product) render(product, allProducts);
+  else notFound();
+}).catch(err => {
+  showDataError(err);
+  root.replaceChildren();
+});
 
 })();

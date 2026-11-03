@@ -1,12 +1,18 @@
 (() => {
 'use strict';
-const { loadProducts, createCard, money, showDataError } = window.NR.ui;
+const {
+  loadProducts,
+  createCard,
+  isMusic,
+  addToBasket,
+  money,
+  showDataError
+} = window.NR.ui;
 const basket = window.NR.cart;
 
 const $ = (s, r = document) => r.querySelector(s);
 let products = [];
 const status = $('#status');
-const announce = msg => { status.textContent = ''; setTimeout(() => (status.textContent = msg), 50); };
 
 /* Mobile navigation: hidden only when JS runs, so the menu always works without it. */
 const nav = $('#site-nav'), menuBtn = $('#menu-btn');
@@ -20,7 +26,6 @@ document.addEventListener('keydown', e => {
 
 /* Home: two rows of new arrivals, one per cover proportion (square music, vertical film) */
 const rowMusic = $('#row-music'), rowFilm = $('#row-film');
-const MUSIC = ['Vinyl', 'CD'];
 /* Carousel: arrows scroll one "page" (the visible columns) at a time; swipe, keyboard and the scrollbar still work. */
 function initCarousel(root) {
   const scroller = root.querySelector('.row-scroll'), list = root.querySelector('.row');
@@ -48,37 +53,81 @@ function initCarousel(root) {
 }
 
 function renderRows() {
-  const latest = isMusic => products
-    .filter(p => MUSIC.includes(p.format) === isMusic)
+  const latest = music => products
+    .filter(product => isMusic(product) === music)
     .sort((a, b) => b.added.localeCompare(a.added))
     .slice(0, 12);
   rowMusic.replaceChildren(...latest(true).map(p => createCard(p, add)));
   rowFilm.replaceChildren(...latest(false).map(p => createCard(p, add)));
   document.querySelectorAll('.carousel').forEach(initCarousel);
 }
-function add(p) { basket.add(p.id); announce(`${p.title} added to your demo basket.`); }
+function add(product) { addToBasket(product, basket, status); }
 
 /* Basket dialog */
-const dlg = $('#basket'), list = $('#basket-list'), subtotal = $('#basket-subtotal'), badge = $('#basket-count');
-function renderBasket(focus) {
-  const lines = basket.read().map(i => ({ ...i, p: products.find(p => p.id === i.id) })).filter(l => l.p);
-  badge.textContent = lines.reduce((n, l) => n + l.qty, 0);
-  list.replaceChildren(...lines.map(({ p, qty }) => {
-    const li = document.createElement('li');
-    const name = document.createElement('span'); name.textContent = `${p.title} (${money.format(p.price)})`;
-    const q = document.createElement('div'); q.className = 'qty';
-    const mk = (label, aria, delta) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = label; b.setAttribute('aria-label', `${aria} ${p.title}`); b.dataset.id = p.id; b.dataset.d = delta; b.addEventListener('click', () => { basket.setQty(p.id, qty + delta); renderBasket({ id: p.id, d: delta }); }); return b; };
-    const n = document.createElement('span'); n.textContent = qty; n.setAttribute('aria-label', `Quantity ${qty}`);
-    q.append(mk('−', 'Remove one', -1), n, mk('+', 'Add one', 1));
-    li.append(name, q);
-    return li;
-  }));
-  subtotal.textContent = lines.length ? `Subtotal: ${money.format(lines.reduce((s, l) => s + l.p.price * l.qty, 0))}` : 'Your basket is empty. Add something from the crates.';
-  if (focus) (list.querySelector(`[data-id="${focus.id}"][data-d="${focus.d}"]`) || $('#basket-close')).focus();
+const basketDialog = $('#basket');
+const basketList = $('#basket-list');
+const basketSubtotal = $('#basket-subtotal');
+const basketCount = $('#basket-count');
+function createQuantityButton(product, quantity, label, delta) {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.textContent = label;
+  button.setAttribute('aria-label', `${delta < 0 ? 'Remove one' : 'Add one'} ${product.title}`);
+  button.dataset.id = product.id;
+  button.dataset.delta = delta;
+  button.addEventListener('click', () => {
+    basket.setQty(product.id, quantity + delta);
+    renderBasket({ id: product.id, delta });
+  });
+  return button;
+}
+
+function createBasketLine({ product, quantity }) {
+  const item = document.createElement('li');
+  const name = document.createElement('span');
+  name.textContent = `${product.title} (${money.format(product.price)})`;
+
+  const controls = document.createElement('div');
+  controls.className = 'qty';
+  const quantityLabel = document.createElement('span');
+  quantityLabel.textContent = quantity;
+  quantityLabel.setAttribute('aria-label', `Quantity ${quantity}`);
+  controls.append(
+    createQuantityButton(product, quantity, '−', -1),
+    quantityLabel,
+    createQuantityButton(product, quantity, '+', 1)
+  );
+  item.append(name, controls);
+  return item;
+}
+
+function renderBasket(focusTarget) {
+  const lines = basket.read()
+    .map(item => ({
+      product: products.find(product => product.id === item.id),
+      quantity: item.qty
+    }))
+    .filter(line => line.product);
+  const itemCount = lines.reduce((total, line) => total + line.quantity, 0);
+  const total = lines.reduce((sum, line) => sum + line.product.price * line.quantity, 0);
+
+  basketCount.textContent = itemCount;
+  basketList.replaceChildren(...lines.map(createBasketLine));
+  basketSubtotal.textContent = lines.length
+    ? `Subtotal: ${money.format(total)}`
+    : 'Your basket is empty. Add something from the crates.';
+
+  if (focusTarget) {
+    const button = [...basketList.querySelectorAll('button')].find(candidate =>
+      candidate.dataset.id === focusTarget.id
+      && candidate.dataset.delta === String(focusTarget.delta)
+    );
+    (button || $('#basket-close')).focus();
+  }
 }
 $('#basket-open').hidden = false;
-$('#basket-open').addEventListener('click', () => { renderBasket(); dlg.showModal(); });
-$('#basket-close').addEventListener('click', () => dlg.close());
+$('#basket-open').addEventListener('click', () => { renderBasket(); basketDialog.showModal(); });
+$('#basket-close').addEventListener('click', () => basketDialog.close());
 document.addEventListener('basket:change', () => renderBasket());
 
 /* Newsletter: client-side validation only, nothing is sent */
@@ -92,8 +141,12 @@ form?.addEventListener('submit', e => {
     : 'Enter a valid email address, for example name@example.com.';
 });
 
-loadProducts().then(data => { products = data; if (rowMusic) renderRows(); renderBasket(); })
-  
-  .catch(err => showDataError(err));
+loadProducts()
+  .then(data => {
+    products = data;
+    if (rowMusic) renderRows();
+    renderBasket();
+  })
+  .catch(showDataError);
 
 })();
